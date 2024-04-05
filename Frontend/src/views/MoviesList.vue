@@ -7,7 +7,7 @@
                 <v-card-title>{{ film.title }}</v-card-title>
             </v-card>
         </v-container>
-        <v-pagination v-model="currentPage" class="mx-auto"  :length="store.state.pages" @click="fetchPage"></v-pagination>
+        <v-pagination :total-visible="8" v-model="currentPage" class="mx-auto"  :length="store.state.pages" @click="fetchPage"></v-pagination>
     </div>
 </template>
 <script setup>
