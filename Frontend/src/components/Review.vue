@@ -11,14 +11,9 @@
         <v-btn @click="$emit('handleSubmit',+gradeValue)">ADD REVIEW</v-btn>
     </v-container>
 </template>
+
 <script setup>
 import { defineEmits,ref } from 'vue';
     const gradeValue=ref('0')
     defineEmits(['handleSubmit'])
 </script>
-<style scoped>
-    select{
-        width: 100px;
-        border: 1px solid green;
-    }
-</style>

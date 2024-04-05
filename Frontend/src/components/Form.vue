@@ -6,8 +6,6 @@
 </template>
 <script setup>
 import { defineProps, defineEmits,ref } from 'vue';
-import { useStore } from 'vuex'
-const store=useStore()
 
 defineEmits(['handleSubmit'])
 const props= defineProps({

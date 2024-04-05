@@ -1,5 +1,6 @@
 import { createStore } from 'vuex'
 import axios from 'axios'
+const url='http://127.0.0.1:8000'
 const store = createStore({
 
     state () {
@@ -36,22 +37,22 @@ const store = createStore({
     actions: {
       async fetchFilms({commit},page) {
         if(!this.state.films[page-1]){
-          const response = await axios.get(`http://127.0.0.1:8000/movies/?page=${page}`)
+          const response = await axios.get(`${url}/movies/?page=${page}`)
           commit('setFilms',{ results:response.data.results,page:page,count:response.data.count})
         }
       },
       async fetchActors({commit}) {
-        const response = await axios.get('http://127.0.0.1:8000/actors/')
+        const response = await axios.get(`${url}/actors/`)
         commit('setActors',response.data)
       },
       async updateDetails({commit},{id,description}){
-        await axios.patch(`http://127.0.0.1:8000/movie/${id}/`,{
+        await axios.patch(`${url}/movie/${id}/`,{
             description:description,
         })
         commit('updateFilm',{id,description})
         },
         async addReview({commit},{id,grade}){
-        const response = await axios.post(`http://127.0.0.1:8000/movie/${id}/review`,{
+        const response = await axios.post(`h${url}/movie/${id}/review`,{
             grade:grade
         })
         commit('updateReviewAverage',{id,average:response.data.grade__avg})
