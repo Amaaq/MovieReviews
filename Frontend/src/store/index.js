@@ -51,12 +51,13 @@ const store = createStore({
         })
         commit('updateFilm',{id,description})
         },
-        async addReview({commit},{id,grade}){
-        const response = await axios.post(`h${url}/movie/${id}/review`,{
-            grade:grade
-        })
-        commit('updateReviewAverage',{id,average:response.data.grade__avg})
-        }
+      async addReview({commit},{id,grade}){
+      const response = await axios.post(`${url}/movie/${id}/review`,{
+          grade:grade
+      })
+      console.log(response)
+      commit('updateReviewAverage',{id,average:response.data.grade__avg})
+      }
     }
   })
 
