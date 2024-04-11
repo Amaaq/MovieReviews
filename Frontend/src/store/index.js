@@ -1,62 +1,50 @@
 import { createStore } from 'vuex'
-import axios from 'axios'
-const url='http://127.0.0.1:8000'
+import API from '@/composables/apiClient'
+
 const store = createStore({
 
     state () {
       return {
-        films: [],
+        movies: [],
+        selectedMovie:null,
         actors:[],
-        pages: 0,
-        currentPage:1
+        numberOfPages: 0,
       }
     },
 
     mutations:{
-      setFilms(state,data){
-        state.films[data.page-1]=data.results
-        state.pages=Math.ceil(data.count/5)
+      setMovies(state,data){
+        state.movies=data.results
+        state.numberOfPages = Math.ceil(data.numberOfPages/5)
+      },
+      setMovie(state,movie){
+        state.selectedMovie=movie
       },
       setActors(state,actors){
         state.actors=actors
       },
-      updateFilm(state,{id,description,}){
-        const filmsInCurrentPage = state.films[state.currentPage-1]
-        const filmToUpdate=filmsInCurrentPage.find(film=>film.id==id)
-        filmToUpdate.description=description
-      },
-      updateReviewAverage(state,{id,average}){
-        const index=state.films[state.currentPage-1].findIndex(film=>film.id==id)
-        state.films[state.currentPage-1][index].average=average.toFixed(2)
-      },
-      setCurrentPage(state,page){
-        state.currentPage = page
-      }
     },
 
     actions: {
-      async fetchFilms({commit},page) {
-        if(!this.state.films[page-1]){
-          const response = await axios.get(`${url}/movies/?page=${page}`)
-          commit('setFilms',{ results:response.data.results,page:page,count:response.data.count})
-        }
+      async fetchMovies({commit},page) {
+          const response = await API.fetchMovies(page)
+          commit('setMovies',{results:response.results,numberOfPages:response.count,page:page})
+      },
+      async fetchMovieById({commit},id) {
+          const response = await API.fetchMovieById(id)
+          commit('setMovie',response)
       },
       async fetchActors({commit}) {
-        const response = await axios.get(`${url}/actors/`)
-        commit('setActors',response.data)
+        const response = await API.fetchActors()
+        commit('setActors',response)
       },
-      async updateDetails({commit},{id,description}){
-        await axios.patch(`${url}/movie/${id}/`,{
-            description:description,
-        })
-        commit('updateFilm',{id,description})
+      async updateDetails({commit},data){
+        const response= await API.updateMovieDetails(data)
+        commit('setMovie',response)
         },
-      async addReview({commit},{id,grade}){
-      const response = await axios.post(`${url}/movie/${id}/review`,{
-          grade:grade
-      })
-      console.log(response)
-      commit('updateReviewAverage',{id,average:response.data.grade__avg})
+      async addReview({commit},data){
+        const response= await API.addReview(data)
+        commit('setMovie',response)
       }
     }
   })

@@ -2,26 +2,28 @@
     <div class="py-6 d-flex flex-column justify-space-around h-screen">
         <h1 class="text-center">Movies List</h1>
         <v-container  class="d-flex flex-column  w-50 my-auto">
-            <v-card v-for="film in films" :to="`/${film.id}`" :key="film.id" class="ma-4 pa-2 text-center">
-                <v-card-title>{{ film.title }}</v-card-title>
+            <v-card v-for="movie in store.state.movies" :to="`/${movie.id}`" :key="movie.id" class="ma-4 pa-2 text-center">
+                <v-card-title>{{ movie.title }}</v-card-title>
             </v-card>
         </v-container>
-        <v-pagination :total-visible="8" v-model="currentPage" class="mx-auto"  :length="store.state.pages" @click="fetchPage"></v-pagination>
+        <v-pagination :total-visible="store.state.numberOfPages" v-model="currentPage" class="mx-auto"  :length="store.state.numberOfPages" @click="fetchMovies"></v-pagination>
     </div>
 </template>
 
 <script setup>
 
-import { computed, ref } from 'vue';
+import { ref,onBeforeMount } from 'vue';
 import { useStore } from 'vuex'
 
 const store=useStore()
 const currentPage=ref(1)
-const films=computed(()=>{
-    return store.state.films[currentPage.value-1]
-})
-const fetchPage=()=>{
-    store.commit('setCurrentPage',currentPage.value)
-    store.dispatch('fetchFilms',currentPage.value)
+
+const fetchMovies= async ()=>{
+    await store.dispatch('fetchMovies',currentPage.value)
 }
+onBeforeMount(async ()=>{
+    if(!store.state.movies.length){
+        await store.dispatch('fetchMovies',currentPage.value)
+    }
+})
 </script>
