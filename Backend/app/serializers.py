@@ -1,5 +1,6 @@
-from .models import Actor,Movie
+from .models import Actor,Movie,Review
 from rest_framework import serializers
+from django.db.models import Avg
 
 class ActorSerializer(serializers.ModelSerializer):
     class Meta:
@@ -8,8 +9,22 @@ class ActorSerializer(serializers.ModelSerializer):
 
         
 class MovieSerializer(serializers.ModelSerializer):
-    average= serializers.DecimalField(max_digits=3,decimal_places=2,read_only=True)
-    actors = ActorSerializer(many=True,read_only=True)
+    actors = ActorSerializer(many=True, read_only=True)
+    average = serializers.SerializerMethodField()
+
     class Meta:
         model = Movie
         fields = '__all__'
+
+    def get_average(self, obj):
+        return obj.review_set.aggregate(moyenne=Avg('grade'))['moyenne']
+
+class MovieListSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Movie
+        fields = ['id', 'title']
+        
+class ReviewSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Review
+        fields = ['grade']
