@@ -3,7 +3,7 @@ version: '3.8'
 services:
   backend:
     build:
-      context: ./Backend
+      context: ./django
       dockerfile: Dockerfile
     ports:
       - "8000:8000"
@@ -16,7 +16,7 @@ services:
 
   frontend:
     build:
-      context: ./Frontend
+      context: ./vuejs
       dockerfile: Dockerfile
     ports:
       - "3000:3000"
@@ -26,10 +26,10 @@ services:
       - "6379:6379"
   celery_worker:
     build:
-      context: ./Backend
+      context: ./django
     environment:
       - CELERY_BROKER=redis://redis:6379/
     volumes:
-      - ./Backend:/app
+      - ./django:/app
     command: >
       sh -c "celery -A movieproj worker -l info"
