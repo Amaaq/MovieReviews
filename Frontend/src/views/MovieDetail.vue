@@ -10,8 +10,8 @@
             <v-card-subtitle> Rating : {{ movie.average }} </v-card-subtitle>
             <v-card-text > {{movie.description}} </v-card-text>
             <v-card-actions>
-                <v-btn @click="dialog=true">Update data</v-btn>
-                <v-btn @click="dialog2=true">Add Review</v-btn>
+                <v-btn @click="detailsDialog=true">Update data</v-btn>
+                <v-btn @click="reviewDialog=true">Add Review</v-btn>
             </v-card-actions>
         </v-card> 
         <v-list>
