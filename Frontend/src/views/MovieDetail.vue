@@ -1,10 +1,8 @@
 <template>
     <v-container v-if="movie" class="pa-12">
-        <v-btn to="/" class="w-25 mb-5"
-          prepend-icon="mdi-arrow-left-circle"
-        >
-         Movie List
-        </v-btn>
+        <RouterLink to="/">
+            <v-btn class="w-25 mb-5" prepend-icon="mdi-arrow-left-circle">Movie List</v-btn>
+        </RouterLink>
         <v-card>
             <v-card-title primary-title> {{movie.title}} </v-card-title>
             <v-card-subtitle> Rating : {{ movie.average }} </v-card-subtitle>
@@ -38,7 +36,7 @@
 
 import { computed, onBeforeMount, ref } from 'vue'
 import { useStore } from 'vuex'
-import {useRoute} from 'vue-router'
+import {useRoute, RouterLink} from 'vue-router'
 import DetailsForm from '@/components/DetailsForm.vue';
 import ReviewForm from '@/components/ReviewForm.vue';
 
