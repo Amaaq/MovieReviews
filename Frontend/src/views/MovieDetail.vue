@@ -23,45 +23,52 @@
                 <v-list-item-title v-text="`${actor.first_name} ${actor.last_name}`"></v-list-item-title>
             </v-list-item>
         </v-list>
-        <v-dialog v-model="dialog" class="w-50">
-            <Form :description="movie.description" :actors="movie.actors" @handle-submit="updateDetails"/>
+        <v-dialog v-model="detailsDialog" class="w-50">
+            <DetailsForm :description="movie.description" :actors="movie.actors" @handle-submit="updateDetails"/>
         </v-dialog>
-        <v-dialog v-model="dialog2" class="w-50">
-            <Review @handle-submit="addReview"/>
+        <v-dialog v-model="reviewDialog" class="w-50">
+            <ReviewForm @handle-submit="addReview"/>
         </v-dialog>
     </v-container>
 <v-container v-else>Loading ...</v-container>
 </template>
 
 <script setup>
-import Form from '@/components/Form.vue'
-import Review from '@/components/Review.vue'
+
 
 import { computed, onBeforeMount, ref } from 'vue'
 import { useStore } from 'vuex'
 import {useRoute} from 'vue-router'
+import DetailsForm from '@/components/DetailsForm.vue';
+import ReviewForm from '@/components/ReviewForm.vue';
+
 const store=useStore()
 const route= useRoute()
-const movieId = route.params.id
 
-const dialog=ref(false)
-const dialog2=ref(false)
+
+const movieId = route.params.id
+const movie = computed(()=>{
+    return store.state.selectedMovie
+})
+
+
+const detailsDialog=ref(false)
+const reviewDialog=ref(false)
 const updateDetails= async (formData)=> {
-    dialog.value=false
+    detailsDialog.value=false
     await store.dispatch('updateDetails',{movieId,...formData})
 }
 const addReview = async(data)=>{
-    dialog2.value=false
+    reviewDialog.value=false
     await store.dispatch('addReview',{movieId,...data})
 }
+
+
 onBeforeMount(async ()=>{
     await store.dispatch('fetchMovieById',movieId)
     if(!store.state.actors.length){
         await store.dispatch('fetchActors')
     }
-})
-const movie = computed(()=>{
-    return store.state.selectedMovie
 })
 
 </script>
