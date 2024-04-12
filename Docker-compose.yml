@@ -5,8 +5,6 @@ services:
     build:
       context: ./Backend
       dockerfile: Dockerfile
-    volumes:
-      - ./Backend/db.sqlite3:/app/db.sqlite3
     ports:
       - "8000:8000"
     command: >
@@ -22,3 +20,16 @@ services:
       dockerfile: Dockerfile
     ports:
       - "3000:3000"
+  redis:
+    image: redis:latest
+    ports:
+      - "6379:6379"
+  celery_worker:
+    build:
+      context: ./Backend
+    environment:
+      - CELERY_BROKER=redis://redis:6379/
+    volumes:
+      - ./Backend:/app
+    command: >
+      sh -c "celery -A movieproj worker -l info"

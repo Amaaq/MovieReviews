@@ -10,5 +10,5 @@ router.register(r'movies', MovieViewSet)
 
 urlpatterns = [
     path('', include(router.urls)),
-    path('actors/',ActorsListView.as_view())
+    path('actors/',ActorsListView.as_view()),
 ]

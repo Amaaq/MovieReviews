@@ -26,4 +26,9 @@ onBeforeMount(async ()=>{
         await store.dispatch('fetchMovies',currentPage.value)
     }
 })
+
+const send=async ()=>{
+    const response = await fetch('http://localhost:8000/reviews/')
+    console.log(response)
+}
 </script>
