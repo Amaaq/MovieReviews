@@ -2,8 +2,6 @@ CLONAGE DU REPOSITORY
 
 "git clone https://github.com/Amaaq/MovieReviews.git"
 "cd MovieReviews"
-Configuration
-Assurez-vous que les fichiers de configuration pour Django et Vue.js sont correctement configurés selon vos besoins. Vous devrez peut-être ajuster les paramètres tels que les variables d'environnement, les ports, etc.
 
 CONSTRUCTION DES CONTENEURS
 
