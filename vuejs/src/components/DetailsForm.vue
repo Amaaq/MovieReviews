@@ -1,18 +1,24 @@
 <template>
-
-    <v-form label="Update Movie Details"  class="pa-5 bg-white">
-        <v-text-field v-model="formData.selectedDescription" label="Description"></v-text-field>
-        <v-select
-        v-model="formData.selectedActors"
-        :items="store.state.actors"
-        :item-props="itemProps"
-        item-value="id"
-        label="Actor"
-        multiple
-        ></v-select>
-        <v-btn @click.prevent="$emit('handleSubmit',formData)">SUBMIT CHANGES</v-btn>
-    </v-form>
-
+  <v-form
+    label="Update Movie Details"
+    class="pa-5 bg-white"
+  >
+    <v-text-field
+      v-model="formData.selectedDescription"
+      label="Description"
+    />
+    <v-select
+      v-model="formData.selectedActors"
+      :items="store.state.actors"
+      :item-props="itemProps"
+      item-value="id"
+      label="Actor"
+      multiple
+    />
+    <v-btn @click.prevent="$emit('handleSubmit',formData)">
+      SUBMIT CHANGES
+    </v-btn>
+  </v-form>
 </template>
 
 <script setup>

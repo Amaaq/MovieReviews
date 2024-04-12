@@ -1,34 +1,65 @@
 <template>
-    <v-container v-if="movie" class="pa-12">
-        <RouterLink to="/">
-            <v-btn class="w-25 mb-5" prepend-icon="mdi-arrow-left-circle">Movie List</v-btn>
-        </RouterLink>
-        <v-card>
-            <v-card-title primary-title> {{movie.title}} </v-card-title>
-            <v-card-subtitle> Rating : {{ movie.average }} </v-card-subtitle>
-            <v-card-text > {{movie.description}} </v-card-text>
-            <v-card-actions>
-                <v-btn @click="detailsDialog=true">Update data</v-btn>
-                <v-btn @click="reviewDialog=true">Add Review</v-btn>
-            </v-card-actions>
-        </v-card> 
-        <v-list>
-            <v-list-subheader>Actors</v-list-subheader>
-            <v-list-item v-for="actor in movie.actors" :key="actor.id" color="primary" variant="plain">
-                <template v-slot:prepend>
-                    <v-icon icon="mdi-account"></v-icon>
-                </template>
-                <v-list-item-title v-text="`${actor.first_name} ${actor.last_name}`"></v-list-item-title>
-            </v-list-item>
-        </v-list>
-        <v-dialog v-model="detailsDialog" class="w-50">
-            <DetailsForm :description="movie.description" :actors="movie.actors" @handle-submit="updateDetails"/>
-        </v-dialog>
-        <v-dialog v-model="reviewDialog" class="w-50">
-            <ReviewForm @handle-submit="addReview"/>
-        </v-dialog>
-    </v-container>
-<v-container v-else>Loading ...</v-container>
+  <v-container
+    v-if="movie"
+    class="pa-12"
+  >
+    <RouterLink to="/">
+      <v-btn
+        class="w-25 mb-5"
+        prepend-icon="mdi-arrow-left-circle"
+      >
+        Movie List
+      </v-btn>
+    </RouterLink>
+    <v-card>
+      <v-card-title primary-title>
+        {{ movie.title }}
+      </v-card-title>
+      <v-card-subtitle> Rating : {{ movie.average }} </v-card-subtitle>
+      <v-card-text> {{ movie.description }} </v-card-text>
+      <v-card-actions>
+        <v-btn @click="detailsDialog=true">
+          Update data
+        </v-btn>
+        <v-btn @click="reviewDialog=true">
+          Add Review
+        </v-btn>
+      </v-card-actions>
+    </v-card> 
+    <v-list>
+      <v-list-subheader>Actors</v-list-subheader>
+      <v-list-item
+        v-for="actor in movie.actors"
+        :key="actor.id"
+        color="primary"
+        variant="plain"
+      >
+        <template #prepend>
+          <v-icon icon="mdi-account" />
+        </template>
+        <v-list-item-title v-text="`${actor.first_name} ${actor.last_name}`" />
+      </v-list-item>
+    </v-list>
+    <v-dialog
+      v-model="detailsDialog"
+      class="w-50"
+    >
+      <DetailsForm
+        :description="movie.description"
+        :actors="movie.actors"
+        @handle-submit="updateDetails"
+      />
+    </v-dialog>
+    <v-dialog
+      v-model="reviewDialog"
+      class="w-50"
+    >
+      <ReviewForm @handle-submit="addReview" />
+    </v-dialog>
+  </v-container>
+  <v-container v-else>
+    Loading ...
+  </v-container>
 </template>
 
 <script setup>
