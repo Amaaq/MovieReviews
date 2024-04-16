@@ -6,8 +6,6 @@ COPY package*.json ./
 
 RUN npm install
 
-VOLUME /app/node_modules
-
 COPY . .
 
 EXPOSE 3000
